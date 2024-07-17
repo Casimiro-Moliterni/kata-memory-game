@@ -7,6 +7,7 @@ let numberMoves = parseInt(moves.textContent);
 let timesDom = document.getElementById('times');
 let errors = document.getElementById('errors');
 let numberErrors = parseInt(errors.textContent);
+let mexStartGame = document.getElementById('newGameText').textContent;
 
 domButtonPlay.addEventListener('click', generatorGame);
 
@@ -23,11 +24,20 @@ numberErrors = 0;
 
 // Funzione che avvia il gioco
 function generatorGame() {
-    timer();
-    let cardArray = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f'];
+    // audio start button 
     playAudio("start.mp3");
+
+    // svuoto la griglia 
     grid.innerHTML = '';
 
+    // funzione del tempo 
+    timer();
+
+    // card array 
+    let cardArraySmall = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f'];
+    // 'g','g','h','h','i','i','l','l'
+
+    // audio loop 
     if (audioLoop) {
         audioLoop.pause();
         audioLoop.currentTime = 0;
@@ -37,15 +47,33 @@ function generatorGame() {
     audioLoop.volume = volumeControl.value;
     audioLoop.play();
 
+    // verifico il livello del gioco 
+    const level = document.querySelector('#level').value;
+    let arraySelected = [];
+    if (level === 'easy') {
+        arraySelected = cardArraySmall;
+    } else if (level === 'hard') {
+        arraySelected = cardArraySmall;
+        arraySelected.push('g','g','h','h')
+    } else {
+        arraySelected = cardArraySmall;
+        arraySelected.push('g','g','h','h','i','i','l','l')
+
+    }
+
+
+    // funzione che stoppa il gioco 
     domButtonStop.addEventListener('click', stopGame);
-    volumeControl.addEventListener('input', function() {
+    volumeControl.addEventListener('input', function () {
         audioLoop.volume = this.value;
     });
 
-    cardArray.sort(() => 0.5 - Math.random());
+    // funzione che mescola le carte 
+    cardArraySmall.sort(() => 0.5 - Math.random());
 
-    for (let i = 0; i < cardArray.length; i++) {
-        let singleCard = cardArray[i];
+    // ciclo delle carte 
+    for (let i = 0; i < cardArraySmall.length; i++) {
+        let singleCard = cardArraySmall[i];
         switch (singleCard) {
             case 'a':
                 singleCard = 'mario.png';
@@ -65,18 +93,32 @@ function generatorGame() {
             case 'f':
                 singleCard = 'fungo.png';
                 break;
+            case 'g':
+                singleCard = 'Waluigi.png';
+                break;
+            case 'h':
+                singleCard = 'Wario.png';
+                break;
+            case 'i':
+                singleCard = 'cheep.webp';
+                break;
+            case 'l':
+                singleCard = 'boo.png';
+                break;
         }
-
-        const cell = generateCell(singleCard, singleCard);
+        // funziona che genera i singoli box all'interno della griglia 
+        const cell = generateCell(singleCard, singleCard,level);
+        console.log(level)
         cell.addEventListener('click', clickCard);
         grid.append(cell);
     }
 }
 
 // Funzione che genera una cella
-function generateCell(value, symbol) {
+function generateCell(value, symbol,type) {
     const myDiv = document.createElement('div');
-    myDiv.classList.add('box', 'none');
+    myDiv.classList.add( 'box','none', 'bg-square');
+    myDiv.classList.add(`${type}`)
     myDiv.innerHTML = `
         <span>
             <img src="./img/${value}" alt="">
@@ -89,7 +131,7 @@ function generateCell(value, symbol) {
 // Funzione per riprodurre l'audio
 function playAudio(sound) {
     let audio = new Audio(sound);
-    audio.oncanplaythrough = function() {
+    audio.oncanplaythrough = function () {
         audio.play();
     }
     return audio;
@@ -107,7 +149,9 @@ function stopGame() {
     grid.innerHTML = '';
     moves.textContent = '';
     errors.textContent = '';
-    timesDom.textContent = '00:00'; // Resetta il timer
+    timesDom.textContent = ''; // Resetta il timer
+    mexStartGame.textContent = mexStartGame;
+    console.log(mexStartGame)
     reset();
 }
 
@@ -117,6 +161,7 @@ function clickCard() {
     if (lookClick) return;
     if (this === firstCard) return;
     this.classList.add('active');
+    this.classList.remove('bg-square');
     if (!firstCard) {
         firstCard = this;
         return;
@@ -151,6 +196,8 @@ function controlMatch() {
         errors.textContent = numberErrors;
         firstCard.classList.remove('active');
         secondCard.classList.remove('active');
+        firstCard.classList.add('bg-square');
+        secondCard.classList.add('bg-square');
         playAudio("error.mp3");
     }
     reset();
@@ -166,6 +213,6 @@ function timer() {
     clearInterval(timerInterval); // Assicura che il vecchio timer sia fermato
     timerInterval = setInterval(() => {
         sec++;
-        timesDom.textContent = '00:' + (sec < 10 ? '0' + sec : sec);
+        timesDom.textContent = (sec < 10 ? '0' + sec : sec);
     }, 1000);
 }

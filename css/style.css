@@ -17,7 +17,7 @@ body{
 }
 .container-xxl{
     height: 100vh;
-    max-width: 1200px;
+    max-width: 70%;
     margin: 0 auto;
     display: flex;
     width: 100%;
@@ -31,7 +31,7 @@ body{
     box-shadow: 0px 6px 21px 9px rgba(0,0,0,0.5);
     border-radius: 50px;
     border: 20px solid rgba(0, 0, 0, 0.925);
-    height: 500px;
+    height: 600px;
     min-width: 100%;
 }
 .card-body{
@@ -51,7 +51,7 @@ body{
     width: 60%;
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    /* gap: 5px; */
 }
 .col-60 h2{
     display: flex;
@@ -80,11 +80,21 @@ body{
     width: 40%;
     padding-left: 1rem;
 }
+.easy{
+    width: 150px;
+    height: 150px;
+}
+.hard{
+    width: calc((100% / 4) - 10px);
+    height: calc((100% / 4) - 10px);
+}
+.crazy{
+    width: 120px;
+    height: 120px;
+}
 .box{
     border-radius: 10px;
-    width: calc((100% / 4) - 5px);
-    height: calc(100% / 3);
-    background-color: rgb(255, 255, 255);
+    margin: 5px;
      display: flex;
     align-items: center;
     justify-content: center;
@@ -99,16 +109,20 @@ body{
    justify-content: center;
 }
 .box img{
-    height: 70%;
+    height: 95%;
 }
 .none img{
-    opacity: 0;
+    display: none;
+}
+.bg-square{
+   background-image: url('../img/punto-interrogativo.png');
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: left;
 }
 
-
-
 .active img{
-    opacity: 1;
+    display: block;
 }
 .col-40 h2{
     font-family: "Press Start 2P", system-ui;
@@ -127,6 +141,7 @@ body{
 .container-btn{
     display: flex;
     justify-content: end;
+    align-items: center;
     width: 100%;
 }
 button{
@@ -181,3 +196,41 @@ button:hover{
     height: 50px;
     width: 100%;
 }
+input[type="range"] {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none; 
+    /* creating a custom design */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    /*  slider progress trick  */
+    overflow: hidden;
+    border-radius: 16px;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none; 
+    /* creating a custom design */
+    height: 15px;
+    width: 15px;
+    background-color: #000000;
+    border-radius: 50%;
+    border: 2px solid #f50;
+    /*  slider progress trick  */
+    box-shadow: -407px 0 0 400px #46006F;
+    position: relative;
+  }
+  input[type="range"]::-webkit-slider-thumb::before{
+    background-image: url('../img/mario.png');
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  /* Track: webkit browsers */
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 15px;
+    background: #6d6868;
+    border-radius: 16px;
+  }
