@@ -85,11 +85,13 @@ body{
     width: calc((100% / 4) - 5px);
     height: calc(100% / 3);
     background-color: rgb(255, 255, 255);
-    display: flex;
+     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;  
+    cursor: pointer; 
+    position: relative; 
 }
+
 .box>span{
    height: 100%;
    display: flex;
@@ -102,6 +104,8 @@ body{
 .none img{
     opacity: 0;
 }
+
+
 
 .active img{
     opacity: 1;
@@ -118,7 +122,7 @@ body{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 700;
     text-align: end;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
 }
 .container-btn{
     display: flex;
@@ -150,7 +154,30 @@ button:hover{
     background-color: #2bc05d71;
     border: 3px solid rgb(255, 255, 255);
 }
-
-#volume-control{
-
+#action{
+    font-family: "Press Start 2P", system-ui;
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    gap: 5px;
+    padding: 0.8rem 0.2rem;
+    border-radius: 5px;
+    min-height: 3rem;
+    background-color: rgba(0, 0, 0, 0.531);
+}
+#action .text{
+    font-family: "Press Start 2P", system-ui;
+    font-size: 15px;
+}
+#moves,#times,#errors{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-size: 20px;
+    margin: 10px auto;
+    font-family: "Press Start 2P", system-ui;
+    background-color: rgba(255, 255, 255, 0.766);
+    height: 50px;
+    width: 100%;
 }

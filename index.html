@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,15 @@
   <!-- font  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap"
+    rel="stylesheet">
   <!-- link font arcade  -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <div class="container-xxl">
     <div class="card">
@@ -32,9 +36,19 @@
             <button id="button-stop" class="stop">chiudi</button>
             <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
           </div>
-          <div>
-            Mosse:
-            <div id="moves"></div>
+          <div id="action">
+            <div class="text">
+              Mosse:
+              <div id="moves"></div>
+            </div>
+            <div class="text">
+              Tempo:
+              <div id="times"></div>
+            </div>
+            <div class="text">
+              Errori:
+              <div id="errors"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -42,4 +56,5 @@
   </div>
   <script type="text/javascript" src="js/script.js"></script>
 </body>
+
 </html>

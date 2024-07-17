@@ -1,47 +1,52 @@
 const domButtonPlay = document.querySelector('#button-play');
 const domButtonStop = document.querySelector('#button-stop');
 const grid = document.querySelector('#grid');
-const volumeControl = document.getElementById('volume-control'); // Correggi il nome della variabile
-let moves =document.getElementById('moves');
+const volumeControl = document.getElementById('volume-control');
+let moves = document.getElementById('moves');
+let numberMoves = parseInt(moves.textContent);
+let timesDom = document.getElementById('times');
+let errors = document.getElementById('errors');
+let numberErrors = parseInt(errors.textContent);
+
 domButtonPlay.addEventListener('click', generatorGame);
 
 let firstCard = null;
 let secondCard = null;
+let thirdCard = null;
 let lookClick = false;
-let audioLoop = null; // Variabile per il riferimento dell'audio di loop
-moves = 0;
+let audioLoop = null;
+let timerInterval = null; // Variabile per il riferimento del timer
+
+numberMoves = 0;
+let times = 0;
+numberErrors = 0;
+
 // Funzione che avvia il gioco
 function generatorGame() {
+    timer();
     let cardArray = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f'];
     playAudio("start.mp3");
     grid.innerHTML = '';
 
-    // Avvia l'audio di loop
     if (audioLoop) {
         audioLoop.pause();
         audioLoop.currentTime = 0;
     }
     audioLoop = new Audio("loop.mp3");
-    audioLoop.loop = true; // Assicura che l'audio sia in loop
-    audioLoop.volume = volumeControl.value; // Imposta il volume iniziale
+    audioLoop.loop = true;
+    audioLoop.volume = volumeControl.value;
     audioLoop.play();
 
-    // Aggiunge l'event listener per il pulsante stop una sola volta
-    domButtonStop.removeEventListener('click', stopGame);
     domButtonStop.addEventListener('click', stopGame);
-
-    // Aggiunge l'event listener per il controllo del volume
     volumeControl.addEventListener('input', function() {
         audioLoop.volume = this.value;
     });
 
-    // Mescola l'array delle carte
     cardArray.sort(() => 0.5 - Math.random());
 
-    // Crea e aggiunge le celle alla griglia
     for (let i = 0; i < cardArray.length; i++) {
         let singleCard = cardArray[i];
-        switch(singleCard) {
+        switch (singleCard) {
             case 'a':
                 singleCard = 'mario.png';
                 break;
@@ -84,7 +89,7 @@ function generateCell(value, symbol) {
 // Funzione per riprodurre l'audio
 function playAudio(sound) {
     let audio = new Audio(sound);
-    audio.oncanplaythrough = function () {
+    audio.oncanplaythrough = function() {
         audio.play();
     }
     return audio;
@@ -93,14 +98,16 @@ function playAudio(sound) {
 // Funzione per fermare il gioco
 function stopGame() {
     playAudio("stop.mp3");
-
-    // Ferma l'audio di loop
     if (audioLoop) {
         audioLoop.pause();
-        audioLoop.currentTime = 0; // Riavvia l'audio al tempo zero
+        audioLoop.currentTime = 0;
     }
+    clearInterval(timerInterval); // Ferma il timer
 
     grid.innerHTML = '';
+    moves.textContent = '';
+    errors.textContent = '';
+    timesDom.textContent = '00:00'; // Resetta il timer
     reset();
 }
 
@@ -109,34 +116,42 @@ function clickCard() {
     playAudio("beep.mp3");
     if (lookClick) return;
     if (this === firstCard) return;
-
     this.classList.add('active');
     if (!firstCard) {
         firstCard = this;
         return;
     }
     secondCard = this;
+    thirdCard = this;
     lookClick = true;
     setTimeout(controlMatch, 800);
-    setTimeout(playAudio())
 }
 
 // Funzione per controllare se le carte corrispondono
 function controlMatch() {
     let match = firstCard.dataset.symbol === secondCard.dataset.symbol;
-
+    numberMoves++;
+    moves.textContent = numberMoves;
     if (match) {
         firstCard.removeEventListener("click", clickCard);
         secondCard.removeEventListener("click", clickCard);
-        firstCard.classList.add('true')
-        secondCard.classList.add('true')
-        playAudio("card-points.mp3")
+        firstCard.classList.remove('none');
+        secondCard.classList.remove('none');
+        firstCard.classList.add('true');
+        secondCard.classList.add('true');
+        playAudio("card-points.mp3");
+
+        // Controlla se tutte le coppie sono state trovate
+        if (document.querySelectorAll('.box.true').length === document.querySelectorAll('.box').length) {
+            clearInterval(timerInterval); // Ferma il timer alla fine del gioco
+            playAudio("win.mp3"); // Audio di vittoria
+        }
     } else {
+        numberErrors++;
+        errors.textContent = numberErrors;
         firstCard.classList.remove('active');
         secondCard.classList.remove('active');
-        playAudio("error.mp3")
-        console.log('lll')
-
+        playAudio("error.mp3");
     }
     reset();
 }
@@ -146,3 +161,11 @@ function reset() {
     [firstCard, secondCard, lookClick] = [null, null, false];
 }
 
+function timer() {
+    let sec = 0;
+    clearInterval(timerInterval); // Assicura che il vecchio timer sia fermato
+    timerInterval = setInterval(() => {
+        sec++;
+        timesDom.textContent = '00:' + (sec < 10 ? '0' + sec : sec);
+    }, 1000);
+}
