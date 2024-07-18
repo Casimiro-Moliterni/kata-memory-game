@@ -249,6 +249,7 @@ function controlMatch() {
     if (match) {
         point--;
         if (point === 0) {
+            audioLoop.pause();
             setTimeout(() => {
                 const ciao = document.querySelectorAll('.box');
                 ciao.forEach(function (element) {
