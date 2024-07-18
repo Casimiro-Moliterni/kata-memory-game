@@ -25,6 +25,8 @@ let time = startingMinutes * 60;
 numberMoves = 0;
 numberErrors = 0;
 let cardTimesSelected = 1000;
+
+
 // Funzione che avvia il gioco
 function generatorGame() {
 
@@ -38,9 +40,51 @@ function generatorGame() {
     timer();
 
     // card array 
-    let cardArraySmall = ['a', 'a', 'b', 'b', 'c', 'c', 'd', 'd', 'e', 'e', 'f', 'f'];
-    // 'g','g','h','h','i','i','l','l'
+    const sonicArray = [
 
+        'sonic-1.png',
+        'sonic-1.png',
+        'sonic-2.png',
+        'sonic-2.png',
+        'sonic-3.png',
+        'sonic-3.png',
+        'sonic-4.png',
+        'sonic-4.png',
+        'sonic-5.png',
+        'sonic-5.png',
+        'sonic-6.png',
+        'sonic-6.png',
+
+    ];
+    const simpsonArray = [
+
+        'sim-1.png',
+        'sim-1.png',
+        'sim-2.png',
+        'sim-2.png',
+        'sim-3.png',
+        'sim-3.png',
+        'sim-4.png',
+        'sim-4.png',
+        'sim-5.png',
+        'sim-5.png',
+        'sim-6.png',
+        'sim-6.png',
+    ]
+    const brosArray = [
+        'mario.png',
+        'mario.png',
+        'queen.webp',
+        'queen.webp',
+        'luigi.png',
+        'luigi.png',
+        'bowser.png',
+        'bowser.png',
+        'donkey.webp',
+        'donkey.webp',
+        'fungo.png',
+        'fungo.png',
+    ];
     // audio loop 
     if (audioLoop) {
         audioLoop.pause();
@@ -51,39 +95,34 @@ function generatorGame() {
     audioLoop.volume = volumeControl.value;
     audioLoop.play();
 
+    // verifico il layout 
+    const layoutSelect = document.querySelector('#layout').value;
+    let arrayLayout = [];
+    if (layoutSelect === 'bros') {
+        arrayLayout = brosArray;
 
-// verifico il livello di velocità in cui vengono mostrate le carte 
+    } else if (layoutSelect === 'simpson') {
+        arrayLayout = simpsonArray;
+    } else {
+        arrayLayout = sonicArray;
 
-const levelFast = document.querySelector('#level-fast').value;
-if (levelFast === 'base') {
-     cardTimesSelected;
-    console.log('base')
-} else if (levelFast === 'fast') {
-    cardTimesSelected=700;
-    console.log('fast')
-
-} else {
-    cardTimesSelected = 300;
-    console.log('sonic')
-}
-
+    }
     // verifico il livello del gioco 
     const level = document.querySelector('#level').value;
     let arraySelected = [];
     if (level === 'easy') {
         point = 6;
-        arraySelected = cardArraySmall;
+        arraySelected = arrayLayout;
     } else if (level === 'hard') {
         point = 8;
-        arraySelected = cardArraySmall;
+        arraySelected = arrayLayout;
         arraySelected.push('g', 'g', 'h', 'h')
     } else {
         point = 10;
-        arraySelected = cardArraySmall;
+        arraySelected = arrayLayout;
         arraySelected.push('g', 'g', 'h', 'h', 'i', 'i', 'l', 'l')
 
     }
-
     // funzione che stoppa il gioco 
     domButtonStop.addEventListener('click', stopGame);
     volumeControl.addEventListener('input', function () {
@@ -91,45 +130,52 @@ if (levelFast === 'base') {
     });
 
     // funzione che mescola le carte 
-    arraySelected.sort(() => 0.5 - Math.random());
+    arrayLayout.sort(() => 0.5 - Math.random());
 
     // ciclo delle carte 
-    for (let i = 0; i < arraySelected.length; i++) {
-        let singleCard = arraySelected[i];
+    for (let i = 0; i < arrayLayout.length; i++) {
+        let singleCard = arrayLayout[i];
         switch (singleCard) {
-            case 'a':
-                singleCard = 'mario.png';
-                break;
-            case 'b':
-                singleCard = 'queen.webp';
-                break;
-            case 'c':
-                singleCard = 'luigi.png';
-                break;
-            case 'd':
-                singleCard = 'bowser.png';
-                break;
-            case 'e':
-                singleCard = 'donkey.webp';
-                break;
-            case 'f':
-                singleCard = 'fungo.png';
-                break;
             case 'g':
-                singleCard = 'Waluigi.png';
+                if (layoutSelect === 'bros') {
+                    singleCard = 'Waluigi.png';
+                } else if (layoutSelect === 'simpson') {
+                    singleCard = 'sim-7.png';
+                } else {
+                    singleCard = 'sonic-7.png';
+                }
                 break;
             case 'h':
-                singleCard = 'Wario.png';
+                if (layoutSelect === 'bros') {
+                    singleCard = 'Wario.png';
+
+                } else if (layoutSelect === 'simpson') {
+                    singleCard = 'sim-8.png';
+                } else {
+                    singleCard = 'sonic-8.png'
+                }
                 break;
             case 'i':
-                singleCard = 'cheep.webp';
+                if (layoutSelect === 'bros') {
+                    singleCard = 'cheep.webp';
+                } else if (layoutSelect === 'simpson') {
+                    singleCard = 'sim-9.png';
+                } else {
+                    singleCard = 'sonic-9.png'
+                }
                 break;
             case 'l':
-                singleCard = 'boo.png';
+                if (layoutSelect === 'bros') {
+                    singleCard = 'boo.png';
+                } else if (layoutSelect === 'simpson') {
+                    singleCard = 'sim-10.png';
+                } else {
+                    singleCard = 'sonic-10.png'
+                }
                 break;
         }
         // funziona che genera i singoli box all'interno della griglia 
-        const cell = generateCell(singleCard, singleCard, level);
+        const cell = generateCell(singleCard, singleCard, level, layoutSelect);
         console.log(level)
         cell.addEventListener('click', clickCard);
         grid.append(cell);
@@ -191,7 +237,7 @@ function clickCard() {
     secondCard = this;
     thirdCard = this;
     lookClick = true;
-    setTimeout(controlMatch,cardTimesSelected);
+    setTimeout(controlMatch, cardTimesSelected);
 }
 
 // Funzione per controllare se le carte corrispondono
@@ -222,7 +268,6 @@ function controlMatch() {
         // Controlla se tutte le coppie sono state trovate
         if (document.querySelectorAll('.box.true').length === document.querySelectorAll('.box').length) {
             clearInterval(timerInterval); // Ferma il timer alla fine del gioco
-            playAudio("win.mp3"); // Audio di vittoria
         }
     } else {
         numberErrors++;
@@ -266,8 +311,7 @@ function generateMessage(moves, errors, times) {
             <div class="text">
               Tempo:
               <div id="times">
-              ${times}
-              <div>secondi</div>
+             <div> ${times} <br> <div>secondi</div></div>
               </div>
             </div>
             <div class="text">
@@ -282,4 +326,3 @@ function generateMessage(moves, errors, times) {
     }
     grid.append(myDiv);
 }
-

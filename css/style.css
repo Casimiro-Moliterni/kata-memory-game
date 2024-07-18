@@ -60,7 +60,6 @@ select>option:hover{
     padding: 1rem;
     display: flex;
     background-image: url('../img/bg.jpg');
-    border: 5px solid black;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -129,13 +128,20 @@ select>option:hover{
     height: 95%;
 }
 .none img{
-    display: none;
+    display:none;
 }
 .active img{
     display: block;
 }
 .bg-square{
    background-image: url('../img/punto-interrogativo.png');
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: left;
+}
+.bg-square-sonic{
+   background-color: #ffffff;
+   background-image: url('../img/symbol-sonic.webp');
    background-size: cover;
    background-repeat: no-repeat;
    background-position: left;
@@ -261,9 +267,9 @@ input[type="range"]::-webkit-slider-runnable-track {
   }
   .message #action{
     padding-top: 2rem;
-    width: 300px;
     background-color: rgba(0, 0, 0, 0);
-    margin: 0 auto;
+   justify-content: center;
+   gap: 40px;
   }
   .message #moves,.message #times,.message #errors{
     border: 3px solid rgba(102, 15, 102, 0.817);
