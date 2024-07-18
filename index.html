@@ -17,6 +17,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- link fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
@@ -31,21 +35,46 @@
           <div>
             Abbina i simboli uguali e scopri tutta la griglia
           </div>
+          <div class="container-level">
+            <!-- level  -->
+            <div>
+              <div>
+                <label>Tempo visibilita</label>
+              </div>
+              <select id="level">
+                <option value="base" class="easy-img">
+                  base
+                </option>
+                <option value="fast">
+                  veloce
+                </option>
+                <option value="sonic">
+                  sonica
+                </option>
+              </select>
+            </div>
+            <div>
+              <div>
+                <label>Difficoltà</label>
+              </div>
+              <select id="level">
+                <option value="easy" class="easy-img">
+                  Tartaruga
+                </option>
+                <option value="hard">
+                  Furbetto
+                </option>
+                <option value="crazy">
+                  Campione
+                </option>
+              </select>
+            </div>
+          </div>
+          <!-- btn game  -->
           <div class="container-btn">
             <div>
               <button id="button-play">Start</button>
               <button id="button-stop" class="stop">chiudi</button>
-            </div>
-            <div>
-              <label>Difficoltà</label>
-              <select id="level">
-                <option value="easy">Fungo</option>
-                <option value="hard">Mario</option>
-                <option value="crazy">Bestia</option>
-              </select>
-            </div>
-            <div>
-              <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.5">
             </div>
           </div>
           <div id="action">
@@ -61,6 +90,10 @@
               Errori:
               <div id="errors"></div>
             </div>
+          </div>
+          <div class="container-volume">
+            <span><i class="fa-solid fa-volume-high"></i></span>
+            <input type="range" id="volume-control" min="0" max="1" step="0.01" value="0.0">
           </div>
         </div>
       </div>

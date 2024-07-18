@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: "Press Start 2P", system-ui;
 }
 img{
     max-width: 100%;
@@ -20,9 +20,23 @@ body{
     max-width: 70%;
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
     width: 100%;
     align-items: center;
     justify-content: center;
+}
+.container-volume{
+    display: flex;
+    align-items: center;
+}
+#volume-control{
+width: 300px;
+}
+#level,#level-fast{
+    width: 200px;
+}
+select>option:hover{
+    background: #46006F;
 }
 .card{
     display: flex;
@@ -30,12 +44,14 @@ body{
     justify-content: center;
     box-shadow: 0px 6px 21px 9px rgba(0,0,0,0.5);
     border-radius: 50px;
-    border: 20px solid rgba(0, 0, 0, 0.925);
     height: 600px;
     min-width: 100%;
+    box-shadow: 0px 3px 27px 23px #47006D;
+    border-radius: 25px;
+    position: relative;
 }
 .card-body{
-    background-color: rgb(91, 35, 91);
+    /* background-color: rgb(91, 35, 91); */
     height:100%;
     width: 100%;
     border-radius: 25px;
@@ -44,6 +60,7 @@ body{
     padding: 1rem;
     display: flex;
     background-image: url('../img/bg.jpg');
+    border: 5px solid black;
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -81,16 +98,16 @@ body{
     padding-left: 1rem;
 }
 .easy{
-    width: 150px;
-    height: 150px;
+    width: calc(100% / 4 - 10px);
+    height:calc(100% / 3 - 10px);
 }
 .hard{
-    width: calc((100% / 4) - 10px);
-    height: calc((100% / 4) - 10px);
+    width: calc(100% / 4 - 10px);
+    height:calc(100% / 4 - 10px);
 }
 .crazy{
-    width: 120px;
-    height: 120px;
+    width: calc(100% / 5 - 10px);
+    height:calc(100% / 4 - 10px);
 }
 .box{
     border-radius: 10px;
@@ -114,6 +131,9 @@ body{
 .none img{
     display: none;
 }
+.active img{
+    display: block;
+}
 .bg-square{
    background-image: url('../img/punto-interrogativo.png');
    background-size: cover;
@@ -121,26 +141,22 @@ body{
    background-position: left;
 }
 
-.active img{
-    display: block;
-}
 .col-40 h2{
     font-family: "Press Start 2P", system-ui;
     line-height: 1.5;
     font-size: xx-large;
-    text-align: end;
-    margin-bottom: 1rem;
+    text-align: center;
 }
 
 .col-40>div{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 700;
-    text-align: end;
+    text-align:center;
     margin-bottom: 3rem;
 }
 .container-btn{
     display: flex;
-    justify-content: end;
+    justify-content: center;
     align-items: center;
     width: 100%;
 }
@@ -175,7 +191,7 @@ button:hover{
     justify-content: space-between;
     font-weight: 700;
     gap: 5px;
-    padding: 0.8rem 0.2rem;
+    padding: 1rem 1rem;
     border-radius: 5px;
     min-height: 3rem;
     background-color: rgba(0, 0, 0, 0.531);
@@ -233,4 +249,34 @@ input[type="range"]::-webkit-slider-runnable-track {
     height: 15px;
     background: #6d6868;
     border-radius: 16px;
+  }
+  .message{
+    height: 100%;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+  }
+  .message h3{
+    margin-bottom: 1rem;
+  }
+  .message #action{
+    padding-top: 2rem;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0);
+    margin: 0 auto;
+  }
+  .message #moves,.message #times,.message #errors{
+    border: 3px solid rgba(102, 15, 102, 0.817);
+   margin-bottom: 5rem;
+  }
+  .message button{
+    margin-top:5rem;
+  }
+  .d-none{
+    display: none;
+  }
+  .container-level{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
