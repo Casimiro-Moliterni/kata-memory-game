@@ -25,7 +25,7 @@ numberMoves = 0;
 numberErrors = 0;
 let cardTimesSelected = 1000;
 let bgSquare = ''; // Inizializzazione della variabile bgSquare
-
+let matchConsecutiveError = 0;
 
 function generatorGame() {
     time = startingMinutes * 60;
@@ -35,7 +35,7 @@ function generatorGame() {
     nameBgSquare();
 
     // audio start button 
-    playAudio("start.mp3");
+    playAudio("./audio/start.mp3");
 
     // svuoto la griglia 
     grid.innerHTML = '';
@@ -124,16 +124,16 @@ function generatorGame() {
         audioLoop.pause();
         audioLoop.currentTime = 0;
     }
-   let audioLayout = null;
+    let audioLayout = null;
 
     if (layoutSelect === 'bros') {
-        audioLayout = "loop.mp3";
+        audioLayout = "./audio/loop.mp3";
         //  bros 
     } else if (layoutSelect === 'simpson') {
-        audioLayout = "sim.mp3";
+        audioLayout = "./audio/sim.mp3";
         //   simpson
     } else {
-        audioLayout = "loop.mp3";
+        audioLayout = "./audio/loop.mp3";
         //   sonic
     }
     audioLoop = new Audio(audioLayout);
@@ -192,14 +192,15 @@ function generatorGame() {
                 }
                 break;
         }
-        
+
         // funziona che genera i singoli box all'interno della griglia 
         const cell = generateCell(singleCard, singleCard, level, bgSquare);
         cell.addEventListener('click', clickCard);
         grid.append(cell);
-       
+
     }
 }
+
 
 // Funzione che genera una cella
 function generateCell(value, symbol, type, bgSquare) {
@@ -226,7 +227,7 @@ function playAudio(sound) {
 
 // Funzione per fermare il gioco
 function stopGame() {
-    playAudio("stop.mp3");
+    playAudio("./audio/stop.mp3");
     if (audioLoop) {
         audioLoop.pause();
         audioLoop.currentTime = 0;
@@ -243,7 +244,7 @@ function stopGame() {
 
 // Funzione che gestisce i click sulle carte
 function clickCard() {
-    playAudio("beep.mp3");
+    playAudio("./audio/beep.mp3");
     if (lookClick) return;
     if (this === firstCard) return;
     this.classList.add('active');
@@ -259,26 +260,28 @@ function clickCard() {
 
 // Funzione per controllare se le carte corrispondono
 function controlMatch(bgSquare) {
-   const layoutSelect = document.querySelector('#layout').value;
+    const layoutSelect = document.querySelector('#layout').value;
     let match = firstCard.dataset.symbol === secondCard.dataset.symbol;
     let audioError;
     let audioPoint;
     if (layoutSelect === 'bros') {
-        audioError = "error.mp3";
-        audioPoint="card-points.mp3";
+        audioError = "./audio/error.mp3";
+        audioPoint = "./audio/card-points.mp3";
         //  bros 
     } else if (layoutSelect === 'simpson') {
-        audioError = "simError.mp3";
-        audioPoint="simPoint.mp3";
+        audioError = "./audio/simError.mp3";
+        audioPoint = "./audio/simPoint.mp3";
+        audioErrorMast = "./audio/simError3;"
         //   simpson
     } else {
-        audioError = "error.mp3";
-        audioPoint="card-points.mp3";
+        audioError = "./audio/error.mp3";
+        audioPoint = "./audio/card-points.mp3";
         //   sonic
     }
     numberMoves++;
     moves.textContent = numberMoves;
     if (match) {
+        matchConsecutiveError = 0;
         point--;
         if (point === 0) {
             clearInterval(timerInterval);
@@ -304,13 +307,22 @@ function controlMatch(bgSquare) {
             clearInterval(timerInterval); // Ferma il timer alla fine del gioco
         }
     } else {
+        // match errato 
+        matchConsecutiveError++;
         numberErrors++;
         errors.textContent = numberErrors;
         firstCard.classList.remove('active');
         secondCard.classList.remove('active');
         firstCard.classList.add(bgSquare); // Usa la variabile bgSquare
         secondCard.classList.add(bgSquare); // Usa la variabile bgSquare
-        playAudio(audioError);
+        if (layoutSelect === 'simpson' && matchConsecutiveError === 3) {
+            playAudio("./audio/simError3.mp3");
+        } else {
+            playAudio(audioError);
+        }
+        if (matchConsecutiveError >= 3) {
+            matchConsecutiveError = 0;
+        }
     }
     reset();
 }
@@ -331,7 +343,7 @@ function timer() {
 }
 
 function generateMessage(moves, errors, times) {
-    playAudio("win.mp3");
+    playAudio("./audio/win.mp3");
     const myDiv = document.createElement('div');
     myDiv.classList.add('message')
     myDiv.innerHTML = `
