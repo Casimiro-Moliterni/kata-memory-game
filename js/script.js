@@ -9,13 +9,12 @@ let timesDom = document.getElementById('times');
 let errors = document.getElementById('errors');
 let numberErrors = parseInt(errors.textContent);
 let mexStartGame = document.getElementById('newGameText').textContent;
-const ciao = document.querySelectorAll('.box');
-
+const myBoxDom = document.querySelectorAll('.box');
+const layoutSelect = document.querySelector('#layout').value;
 domButtonPlay.addEventListener('click', generatorGame);
 
 let firstCard = null;
 let secondCard = null;
-let thirdCard = null;
 let lookClick = false;
 let audioLoop = null;
 let timerInterval = null; // Variabile per il riferimento del timer
@@ -25,23 +24,29 @@ let time = startingMinutes * 60;
 numberMoves = 0;
 numberErrors = 0;
 let cardTimesSelected = 1000;
+let bgSquare = ''; // Inizializzazione della variabile bgSquare
 
 
-// Funzione che avvia il gioco
 function generatorGame() {
+    time = startingMinutes * 60;
+    numberMoves = 0;
+    numberErrors = 0;
+    // Reimposta la variabile bgSquare
+    nameBgSquare();
 
     // audio start button 
     playAudio("start.mp3");
 
     // svuoto la griglia 
     grid.innerHTML = '';
-
+    moves.textContent = '0';
+    errors.textContent = '0';
+    timesDom.textContent = '00:00';
     // funzione del tempo 
     timer();
 
     // card array 
     const sonicArray = [
-
         'sonic-1.png',
         'sonic-1.png',
         'sonic-2.png',
@@ -54,10 +59,8 @@ function generatorGame() {
         'sonic-5.png',
         'sonic-6.png',
         'sonic-6.png',
-
     ];
     const simpsonArray = [
-
         'sim-1.png',
         'sim-1.png',
         'sim-2.png',
@@ -85,15 +88,7 @@ function generatorGame() {
         'fungo.png',
         'fungo.png',
     ];
-    // audio loop 
-    if (audioLoop) {
-        audioLoop.pause();
-        audioLoop.currentTime = 0;
-    }
-    audioLoop = new Audio("loop.mp3");
-    audioLoop.loop = true;
-    audioLoop.volume = volumeControl.value;
-    audioLoop.play();
+
 
     // verifico il layout 
     const layoutSelect = document.querySelector('#layout').value;
@@ -123,6 +118,29 @@ function generatorGame() {
         arraySelected.push('g', 'g', 'h', 'h', 'i', 'i', 'l', 'l')
 
     }
+
+    // audio loop 
+    if (audioLoop) {
+        audioLoop.pause();
+        audioLoop.currentTime = 0;
+    }
+   let audioLayout = null;
+
+    if (layoutSelect === 'bros') {
+        audioLayout = "loop.mp3";
+        //  bros 
+    } else if (layoutSelect === 'simpson') {
+        audioLayout = "sim.mp3";
+        //   simpson
+    } else {
+        audioLayout = "loop.mp3";
+        //   sonic
+    }
+    audioLoop = new Audio(audioLayout);
+    audioLoop.loop = true;
+    audioLoop.volume = volumeControl.value;
+    audioLoop.play();
+
     // funzione che stoppa il gioco 
     domButtonStop.addEventListener('click', stopGame);
     volumeControl.addEventListener('input', function () {
@@ -174,19 +192,20 @@ function generatorGame() {
                 }
                 break;
         }
+        
         // funziona che genera i singoli box all'interno della griglia 
-        const cell = generateCell(singleCard, singleCard, level, layoutSelect);
-        console.log(level)
+        const cell = generateCell(singleCard, singleCard, level, bgSquare);
         cell.addEventListener('click', clickCard);
         grid.append(cell);
+       
     }
 }
 
 // Funzione che genera una cella
-function generateCell(value, symbol, type) {
+function generateCell(value, symbol, type, bgSquare) {
     const myDiv = document.createElement('div');
-    myDiv.classList.add('box', 'none', 'bg-square');
-    myDiv.classList.add(`${type}`)
+    myDiv.classList.add('box', 'none', `${bgSquare}`);
+    myDiv.classList.add(`${type}`);
     myDiv.innerHTML = `
         <span>
             <img src="./img/${value}" alt="">
@@ -219,7 +238,6 @@ function stopGame() {
     errors.textContent = '';
     timesDom.textContent = ''; // Resetta il timer
     mexStartGame.textContent = mexStartGame;
-    console.log(mexStartGame)
     reset();
 }
 
@@ -229,33 +247,48 @@ function clickCard() {
     if (lookClick) return;
     if (this === firstCard) return;
     this.classList.add('active');
-    this.classList.remove('bg-square');
+    this.classList.remove(bgSquare); // Usa la variabile bgSquare
     if (!firstCard) {
         firstCard = this;
         return;
     }
     secondCard = this;
-    thirdCard = this;
     lookClick = true;
-    setTimeout(controlMatch, cardTimesSelected);
+    setTimeout(() => controlMatch(bgSquare), cardTimesSelected); // Passa bgSquare alla funzione controlMatch
 }
 
 // Funzione per controllare se le carte corrispondono
-function controlMatch() {
-
+function controlMatch(bgSquare) {
+   const layoutSelect = document.querySelector('#layout').value;
     let match = firstCard.dataset.symbol === secondCard.dataset.symbol;
+    let audioError;
+    let audioPoint;
+    if (layoutSelect === 'bros') {
+        audioError = "error.mp3";
+        audioPoint="card-points.mp3";
+        //  bros 
+    } else if (layoutSelect === 'simpson') {
+        audioError = "simError.mp3";
+        audioPoint="simPoint.mp3";
+        //   simpson
+    } else {
+        audioError = "error.mp3";
+        audioPoint="card-points.mp3";
+        //   sonic
+    }
     numberMoves++;
     moves.textContent = numberMoves;
     if (match) {
         point--;
         if (point === 0) {
+            clearInterval(timerInterval);
             audioLoop.pause();
             setTimeout(() => {
-                const ciao = document.querySelectorAll('.box');
-                ciao.forEach(function (element) {
+                const myBoxDom = document.querySelectorAll('.box');
+                myBoxDom.forEach(function (element) {
                     element.parentNode.removeChild(element);
                 });
-                generateMessage(moves.textContent, errors.textContent, timesDom.textContent)
+                generateMessage(moves.textContent, errors.textContent, timesDom.textContent);
             }, 2000)
         }
         firstCard.removeEventListener("click", clickCard);
@@ -264,7 +297,7 @@ function controlMatch() {
         secondCard.classList.remove('none');
         firstCard.classList.add('true');
         secondCard.classList.add('true');
-        playAudio("card-points.mp3");
+        playAudio(audioPoint);
 
         // Controlla se tutte le coppie sono state trovate
         if (document.querySelectorAll('.box.true').length === document.querySelectorAll('.box').length) {
@@ -275,9 +308,9 @@ function controlMatch() {
         errors.textContent = numberErrors;
         firstCard.classList.remove('active');
         secondCard.classList.remove('active');
-        firstCard.classList.add('bg-square');
-        secondCard.classList.add('bg-square');
-        playAudio("error.mp3");
+        firstCard.classList.add(bgSquare); // Usa la variabile bgSquare
+        secondCard.classList.add(bgSquare); // Usa la variabile bgSquare
+        playAudio(audioError);
     }
     reset();
 }
@@ -288,7 +321,6 @@ function reset() {
 }
 
 function timer() {
-    let sec = 0;
     clearInterval(timerInterval); // Assicura che il vecchio timer sia fermato
     timerInterval = setInterval(() => {
         const minutes = Math.floor(time / 60);
@@ -297,6 +329,7 @@ function timer() {
         time++;
     }, 1000);
 }
+
 function generateMessage(moves, errors, times) {
     playAudio("win.mp3");
     const myDiv = document.createElement('div');
@@ -326,4 +359,18 @@ function generateMessage(moves, errors, times) {
         numberErrors.textContent = 0;
     }
     grid.append(myDiv);
+}
+
+function nameBgSquare() {
+    const layoutSelect = document.querySelector('#layout').value;
+    if (layoutSelect === 'bros') {
+        bgSquare = 'bg-square-bros';
+        //  bros 
+    } else if (layoutSelect === 'sonic') {
+        bgSquare = 'bg-square-sonic';
+        //   sonic 
+    } else {
+        bgSquare = 'bg-square-sim';
+        //   simpson 
+    }
 }

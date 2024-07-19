@@ -133,7 +133,7 @@ select>option:hover{
 .active img{
     display: block;
 }
-.bg-square{
+.bg-square-bros{
    background-image: url('../img/punto-interrogativo.png');
    background-size: cover;
    background-repeat: no-repeat;
@@ -141,10 +141,19 @@ select>option:hover{
 }
 .bg-square-sonic{
    background-color: #ffffff;
-   background-image: url('../img/symbol-sonic.webp');
+   background-image: url('../img/bgsonic.jpg');
    background-size: cover;
    background-repeat: no-repeat;
-   background-position: left;
+   background-position: center;
+   border: 4px solid #8F210B;
+}
+.bg-square-sim{
+    border: 4px solid rgba(241, 0, 0, 0.663);
+   background-color: #ffffff;
+   background-image: url('../img/bgSim2.jpg');
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
 }
 
 .col-40 h2{
@@ -280,6 +289,9 @@ input[type="range"]::-webkit-slider-runnable-track {
   }
   .d-none{
     display: none;
+  }
+  .d-active{
+    display: block;
   }
   .container-level{
     width: 100%;
