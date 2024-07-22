@@ -195,9 +195,14 @@ function generatorGame() {
 
         // funziona che genera i singoli box all'interno della griglia 
         const cell = generateCell(singleCard, singleCard, level, bgSquare);
-        cell.addEventListener('click', clickCard);
+        cell.classList.add('active','true')
+        cell.classList.remove(bgSquare)
+        setTimeout(() => {
+            cell.addEventListener('click', clickCard);
+            cell.classList.remove('active','true')
+            cell.classList.add(bgSquare)
+        }, 3000)
         grid.append(cell);
-
     }
 }
 
