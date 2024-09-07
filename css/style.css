@@ -348,6 +348,8 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 @media (max-width: 600px) {
   /* Stili per schermi con larghezza massima di 600px (smartphone) */
+ 
+ 
   .container-xxl,
   .card {
     width: 95%;
@@ -359,6 +361,7 @@ input[type="range"]::-webkit-slider-runnable-track {
     margin: 0 auto;
     height:100%;
     min-height:100vh;
+    margin:10px 0;
   }
   .card-body {
     display: block;
@@ -368,9 +371,12 @@ input[type="range"]::-webkit-slider-runnable-track {
     background-size: cover;
     height:100%;
     min-height:100vh;
+    display:flex;
+    flex-direction:column;
   }
   #grid {
     width: 100%;
+    flex-grow:1
   }
   .easy {
     width: calc(100% / 4 - 10px);
@@ -395,10 +401,25 @@ input[type="range"]::-webkit-slider-runnable-track {
     display:block;
   }
   .container-btn {
+    
     margin-top:1rem;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+#newGameText{
+    margin:2rem;
+    font-size:15px;
+}
+.container-title{
+    padding:1rem;
+}
+.container-title h2{
+    text-align:center
+}
+.container-title .details{
+    font-size:10px;
+    margin:1rem;
 }
 }
