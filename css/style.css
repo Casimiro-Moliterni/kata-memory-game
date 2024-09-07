@@ -360,7 +360,7 @@ input[type="range"]::-webkit-slider-runnable-track {
   .card {
     margin: 0 auto;
     height:100%;
-    min-height:100vh;
+    min-height:70vh;
     margin:10px 0;
   }
   .card-body {
@@ -370,7 +370,7 @@ input[type="range"]::-webkit-slider-runnable-track {
     background-repeat: no-repeat;
     background-size: cover;
     height:100%;
-    min-height:100vh;
+    min-height:70vh;
     display:flex;
     flex-direction:column;
   }
@@ -421,5 +421,6 @@ input[type="range"]::-webkit-slider-runnable-track {
 .container-title .details{
     font-size:10px;
     margin:1rem;
+    text-align:center;
 }
 }
