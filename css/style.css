@@ -352,7 +352,7 @@ input[type="range"]::-webkit-slider-runnable-track {
  
   .container-xxl,
   .card {
-    max-width: 700px;
+    max-width: 1000px;
     height: 100%;
     min-height:100vh;
   }
